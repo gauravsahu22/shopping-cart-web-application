@@ -1,0 +1,152 @@
+<div class="container page">
+  <h1 class="checkout__heading">Checkout</h1>
+
+  @if (isEmpty()) {
+    <app-empty-state
+      icon="cart"
+      heading="There’s nothing to check out"
+      body="Add a product to your cart and come back to complete your order."
+    >
+      <a class="btn btn--primary" routerLink="/">Browse products</a>
+    </app-empty-state>
+  } @else {
+    <div class="checkout">
+      <form class="panel checkout__form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+        <h2 class="checkout__section-title">Shipping details</h2>
+
+        <div class="field">
+          <label class="label" for="fullName">Full name</label>
+          <input
+            id="fullName"
+            class="input"
+            type="text"
+            autocomplete="name"
+            formControlName="fullName"
+            [attr.aria-invalid]="showError('fullName')"
+            [attr.aria-describedby]="showError('fullName') ? 'fullName-error' : null"
+          />
+          @if (showError('fullName')) {
+            <p class="field-error" id="fullName-error">Please enter your full name.</p>
+          }
+        </div>
+
+        <div class="field">
+          <label class="label" for="email">Email</label>
+          <input
+            id="email"
+            class="input"
+            type="email"
+            autocomplete="email"
+            formControlName="email"
+            [attr.aria-invalid]="showError('email')"
+            [attr.aria-describedby]="showError('email') ? 'email-error' : null"
+          />
+          @if (showError('email')) {
+            <p class="field-error" id="email-error">
+              Enter an email address like name@example.com.
+            </p>
+          }
+        </div>
+
+        <div class="field">
+          <label class="label" for="address">Address</label>
+          <input
+            id="address"
+            class="input"
+            type="text"
+            autocomplete="street-address"
+            formControlName="address"
+            [attr.aria-invalid]="showError('address')"
+            [attr.aria-describedby]="showError('address') ? 'address-error' : null"
+          />
+          @if (showError('address')) {
+            <p class="field-error" id="address-error">Please enter a delivery address.</p>
+          }
+        </div>
+
+        <div class="checkout__row">
+          <div class="field">
+            <label class="label" for="city">City</label>
+            <input
+              id="city"
+              class="input"
+              type="text"
+              autocomplete="address-level2"
+              formControlName="city"
+              [attr.aria-invalid]="showError('city')"
+              [attr.aria-describedby]="showError('city') ? 'city-error' : null"
+            />
+            @if (showError('city')) {
+              <p class="field-error" id="city-error">Please enter a city.</p>
+            }
+          </div>
+
+          <div class="field">
+            <label class="label" for="postcode">Postcode</label>
+            <input
+              id="postcode"
+              class="input"
+              type="text"
+              autocomplete="postal-code"
+              formControlName="postcode"
+              [attr.aria-invalid]="showError('postcode')"
+              [attr.aria-describedby]="showError('postcode') ? 'postcode-error' : null"
+            />
+            @if (showError('postcode')) {
+              <p class="field-error" id="postcode-error">Enter a valid postcode.</p>
+            }
+          </div>
+        </div>
+
+        <div class="checkout__payment">
+          <h2 class="checkout__section-title">Payment</h2>
+          <p class="checkout__payment-note">
+            <app-icon name="lock" [size]="16" />
+            This is a demonstration store. No card details are collected and no payment is taken.
+          </p>
+        </div>
+
+        <button type="submit" class="btn btn--accent btn--block" [disabled]="submitting()">
+          @if (submitting()) {
+            Placing your order…
+          } @else {
+            Pay {{ total() | currency: 'USD' }}
+          }
+        </button>
+      </form>
+
+      <aside class="panel checkout__summary" aria-labelledby="checkout-summary">
+        <h2 id="checkout-summary" class="checkout__section-title">Your order</h2>
+
+        <ul class="summary-items" role="list">
+          @for (item of items(); track item.id) {
+            <li class="summary-item">
+              <span class="summary-item__qty" aria-hidden="true">{{ item.quantity }}×</span>
+              <span class="summary-item__title">{{ item.title }}</span>
+              <span class="summary-item__price">
+                {{ lineTotal(item) | currency: 'USD' }}
+              </span>
+            </li>
+          }
+        </ul>
+
+        <dl class="summary-rows">
+          <div class="summary-row">
+            <dt>Subtotal</dt>
+            <dd>{{ subtotal() | currency: 'USD' }}</dd>
+          </div>
+          <div class="summary-row">
+            <dt>Items</dt>
+            <dd>{{ totalQuantity() }}</dd>
+          </div>
+          <div class="summary-row summary-row--total">
+            <dt>Total</dt>
+            <dd>{{ total() | currency: 'USD' }}</dd>
+          </div>
+        </dl>
+
+        <a class="btn btn--quiet" routerLink="/cart">Edit cart</a>
+      </aside>
+    </div>
+  }
+</div>

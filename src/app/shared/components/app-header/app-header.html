@@ -1,0 +1,31 @@
+<header class="header">
+  <div class="header__inner container">
+    <a class="brand" routerLink="/" aria-label="Kibo Goods — home">
+      <img class="brand__mark" src="favicon.svg" alt="" aria-hidden="true" width="38" height="38" />
+      <span class="brand__text">
+        <span class="brand__name">Kibo Goods</span>
+        <span class="brand__tagline">Curated marketplace</span>
+      </span>
+    </a>
+
+    <div class="header__actions">
+      <button
+        type="button"
+        class="icon-button"
+        [attr.aria-label]="theme() === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'"
+        (click)="toggleTheme()"
+      >
+        <app-icon [name]="theme() === 'dark' ? 'sun' : 'moon'" [size]="18" />
+      </button>
+
+      <a class="cart-button" routerLink="/cart">
+        <app-icon name="cart" [size]="18" />
+        <span class="cart-button__label">Cart</span>
+        <span class="cart-button__count" aria-hidden="true">{{ cartQuantity() }}</span>
+        <span class="visually-hidden">
+          {{ cartQuantity() }} {{ cartQuantity() === 1 ? 'item' : 'items' }} in your cart
+        </span>
+      </a>
+    </div>
+  </div>
+</header>

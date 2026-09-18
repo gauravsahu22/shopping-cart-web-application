@@ -1,0 +1,54 @@
+<div class="container page">
+  @if (order(); as placed) {
+    <div class="confirmation">
+      <div class="confirmation__hero">
+        <span class="confirmation__check" aria-hidden="true">
+          <app-icon name="check" [size]="30" />
+        </span>
+        <h1 class="confirmation__title">Order completed</h1>
+        <p class="confirmation__body">
+          Thanks, {{ placed.customerName }} — your order is confirmed. A receipt is on its way to
+          {{ placed.email }}.
+        </p>
+
+        <dl class="confirmation__meta">
+          <div>
+            <dt>Order reference</dt>
+            <dd class="confirmation__reference">{{ placed.reference }}</dd>
+          </div>
+          <div>
+            <dt>Placed</dt>
+            <dd>{{ placed.placedAt | date: 'medium' }}</dd>
+          </div>
+          <div>
+            <dt>Total paid</dt>
+            <dd>{{ placed.total | currency: 'USD' }}</dd>
+          </div>
+        </dl>
+      </div>
+
+      <section class="panel confirmation__summary" aria-labelledby="order-items">
+        <h2 id="order-items" class="confirmation__section-title">What you ordered</h2>
+
+        <ul class="summary-items" role="list">
+          @for (item of placed.items; track item.id) {
+            <li class="summary-item">
+              <span class="summary-item__qty" aria-hidden="true">{{ item.quantity }}×</span>
+              <span class="summary-item__title">{{ item.title }}</span>
+              <span class="summary-item__price">{{ lineTotal(item) | currency: 'USD' }}</span>
+            </li>
+          }
+        </ul>
+
+        <dl class="summary-rows">
+          <div class="summary-row summary-row--total">
+            <dt>Total</dt>
+            <dd>{{ placed.total | currency: 'USD' }}</dd>
+          </div>
+        </dl>
+
+        <a class="btn btn--primary btn--block" routerLink="/">Continue shopping</a>
+      </section>
+    </div>
+  }
+</div>

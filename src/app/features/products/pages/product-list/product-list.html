@@ -1,0 +1,100 @@
+<div class="container page">
+  <section class="hero">
+    <div class="hero__content">
+      <p class="hero__eyebrow">Kibo Goods · Curated marketplace</p>
+      <h1 class="hero__title">
+        Everything you need,
+        <em>beautifully picked</em>
+      </h1>
+      <p class="hero__body">
+        Hand-chosen pieces across clothing, jewellery and tech. Filter by category, search by name,
+        and sort by price or rating — your cart is saved on this device.
+      </p>
+    </div>
+
+    <dl class="hero__stats">
+      <div class="hero__stat">
+        <dt>In the catalogue</dt>
+        <dd>{{ catalogue().length }}</dd>
+      </div>
+      <div class="hero__stat">
+        <dt>In your basket</dt>
+        <dd>{{ cartQuantity() }}</dd>
+      </div>
+    </dl>
+  </section>
+
+  <app-product-filters
+    [search]="query().search"
+    [category]="query().category"
+    [sort]="query().sort"
+    [categories]="categories()"
+    [resultCount]="page().total"
+    [hasActiveFilters]="hasActiveFilters()"
+    (searchChanged)="onSearch($event)"
+    (categoryChanged)="onCategory($event)"
+    (sortChanged)="onSort($event)"
+    (filtersCleared)="onClearFilters()"
+  />
+
+  <h2 class="visually-hidden">Products</h2>
+
+  @switch (status()) {
+    @case ('error') {
+      <app-error-state
+        [error]="error()!"
+        heading="We couldn’t load the catalogue"
+        (retry)="retry()"
+      />
+    }
+    @case ('loaded') {
+      @if (page().total === 0) {
+        <app-empty-state
+          icon="search"
+          heading="No products match your filters"
+          body="Try a different search term, or clear the filters to see the whole catalogue."
+        >
+          <button type="button" class="btn btn--ghost" (click)="onClearFilters()">
+            Clear filters
+          </button>
+        </app-empty-state>
+      } @else {
+        <ul class="grid" role="list">
+          @for (product of page().items; track product.id; let index = $index) {
+            <li class="grid__cell">
+              <app-product-card
+                [product]="product"
+                [quantityInCart]="quantityFor(product.id)"
+                [priority]="index < eagerImageCount"
+                (add)="addToCart($event)"
+                (increment)="increment($event)"
+                (decrement)="decrement($event)"
+                (remove)="remove($event)"
+              />
+            </li>
+          }
+        </ul>
+
+        <div class="pager">
+          <p class="pager__status" aria-live="polite">
+            Showing <strong>{{ page().shown }}</strong> of <strong>{{ page().total }}</strong>
+          </p>
+          @if (page().hasMore) {
+            <div class="pager__actions">
+              <button type="button" class="btn btn--accent" (click)="loadMore()">
+                Load more
+                <span class="pager__badge">+{{ page().remaining }}</span>
+              </button>
+              <button type="button" class="btn btn--ghost" (click)="showAll()">
+                Show all {{ page().total }}
+              </button>
+            </div>
+          }
+        </div>
+      }
+    }
+    @default {
+      <app-product-grid-skeleton [count]="8" />
+    }
+  }
+</div>

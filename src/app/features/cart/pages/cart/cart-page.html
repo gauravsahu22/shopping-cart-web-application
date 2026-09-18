@@ -1,0 +1,73 @@
+<div class="container page">
+  <header class="cart-head">
+    <h1>Your cart</h1>
+    @if (!isEmpty()) {
+      <p class="cart-head__meta">
+        {{ lineCount() }} {{ lineCount() === 1 ? 'product' : 'products' }} · {{ totalQuantity() }}
+        {{ totalQuantity() === 1 ? 'item' : 'items' }}
+      </p>
+    }
+  </header>
+
+  @if (isEmpty()) {
+    <app-empty-state
+      icon="cart"
+      heading="Your cart is empty"
+      body="Browse the catalogue and add something you like — we’ll keep it here for you."
+    >
+      <a class="btn btn--primary" routerLink="/">Continue shopping</a>
+    </app-empty-state>
+  } @else {
+    <div class="cart">
+      <section class="panel cart__lines" aria-label="Cart items">
+        <ul role="list" class="cart__list">
+          @for (item of items(); track item.id) {
+            <li>
+              <app-cart-line
+                [item]="item"
+                (increment)="increment($event)"
+                (decrement)="decrement($event)"
+                (remove)="remove($event)"
+              />
+            </li>
+          }
+        </ul>
+
+        <a class="btn btn--quiet cart__continue" routerLink="/">
+          <app-icon name="arrow-left" [size]="16" />
+          Continue shopping
+        </a>
+      </section>
+
+      <aside class="panel cart__summary" aria-labelledby="summary-heading">
+        <h2 id="summary-heading" class="cart__summary-title">Order summary</h2>
+
+        <dl class="summary-rows">
+          <div class="summary-row">
+            <dt>Subtotal</dt>
+            <dd>{{ subtotal() | currency: 'USD' }}</dd>
+          </div>
+          <div class="summary-row">
+            <dt>Items</dt>
+            <dd>{{ totalQuantity() }}</dd>
+          </div>
+          <div class="summary-row">
+            <dt>Shipping</dt>
+            <dd class="summary-row__muted">Calculated at checkout</dd>
+          </div>
+          <div class="summary-row summary-row--total">
+            <dt>Total</dt>
+            <dd>{{ total() | currency: 'USD' }}</dd>
+          </div>
+        </dl>
+
+        <a class="btn btn--accent btn--block" routerLink="/checkout">Proceed to checkout</a>
+
+        <p class="cart__note">
+          <app-icon name="lock" [size]="14" />
+          This is a demo store — no payment is taken.
+        </p>
+      </aside>
+    </div>
+  }
+</div>

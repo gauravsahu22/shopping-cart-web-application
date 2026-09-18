@@ -1,0 +1,61 @@
+<section class="panel filters" aria-label="Search and filter products">
+  <div class="filters__row">
+    <div class="field filters__search">
+      <label class="label" for="product-search">Search products</label>
+      <div class="filters__input-wrap">
+        <span class="filters__input-icon" aria-hidden="true">
+          <app-icon name="search" [size]="18" />
+        </span>
+        <input
+          id="product-search"
+          type="search"
+          class="input filters__input"
+          placeholder="Try “jacket” or “backpack”"
+          autocomplete="off"
+          [formControl]="searchControl"
+        />
+      </div>
+    </div>
+
+    <div class="field filters__sort">
+      <label class="label" for="product-sort">Sort by</label>
+      <select
+        id="product-sort"
+        class="select"
+        [value]="sort()"
+        (change)="onSortChange($any($event.target).value)"
+      >
+        @for (option of sortOptions; track option.value) {
+          <option [value]="option.value">{{ option.label }}</option>
+        }
+      </select>
+    </div>
+  </div>
+
+  <div class="filters__categories" role="group" aria-label="Filter by category">
+    @for (option of categories(); track option.label) {
+      <button
+        type="button"
+        class="chip"
+        [attr.aria-pressed]="option.value === category()"
+        (click)="categoryChanged.emit(option.value)"
+      >
+        {{ option.label }}
+        <span class="chip__count">{{ option.count }}</span>
+      </button>
+    }
+  </div>
+
+  @if (hasActiveFilters()) {
+    <div class="filters__footer">
+      <button type="button" class="btn btn--quiet btn--sm" (click)="filtersCleared.emit()">
+        <app-icon name="close" [size]="14" />
+        Clear filters
+      </button>
+      <p class="filters__count" aria-live="polite">
+        <strong>{{ resultCount() }}</strong>
+        {{ resultCount() === 1 ? 'match' : 'matches' }}
+      </p>
+    </div>
+  }
+</section>

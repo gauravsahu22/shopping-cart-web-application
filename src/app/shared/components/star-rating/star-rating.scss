@@ -1,0 +1,27 @@
+:host {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+
+.stars {
+  display: inline-flex;
+  gap: 1px;
+  letter-spacing: 1px;
+  color: var(--border-strong);
+}
+
+.star--on {
+  color: #d8a33a;
+}
+
+.value {
+  font-weight: 700;
+  color: var(--text);
+}
+
+.count {
+  color: var(--text-subtle);
+}

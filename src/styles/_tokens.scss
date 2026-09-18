@@ -1,0 +1,155 @@
+/**
+ * Design tokens — the single source of truth for colour, spacing, radius,
+ * elevation and typography. Components must never hard-code raw values.
+ */
+
+:root {
+  /* ---------- Spacing scale (4px base) ---------- */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 2.5rem;
+  --space-8: 3rem;
+  --space-9: 4rem;
+
+  /* ---------- Radius ---------- */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --radius-pill: 999px;
+
+  /* ---------- Typography ---------- */
+  --font-display:
+    'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, 'Times New Roman', serif;
+  --font-body:
+    ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+
+  --text-xs: 0.6875rem;
+  --text-sm: 0.8125rem;
+  --text-base: 0.9375rem;
+  --text-md: 1.0625rem;
+  --text-lg: 1.375rem;
+  --text-xl: 1.75rem;
+  --text-2xl: 2.25rem;
+  --text-3xl: 3.25rem;
+
+  --leading-tight: 1.12;
+  --leading-snug: 1.35;
+  --leading-normal: 1.6;
+
+  --tracking-wide: 0.08em;
+
+  /* ---------- Layout ---------- */
+  --container-max: 1280px;
+  --header-height: 72px;
+
+  /* ---------- Motion ---------- */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-fast: 120ms;
+  --duration-base: 220ms;
+
+  /* ---------- Brand constants (theme independent) ---------- */
+  --brand-crimson: #d0263a;
+  --brand-crimson-strong: #b01f31;
+  --brand-plum: #2e1b33;
+  --brand-gold: #e6d0a0;
+
+  color-scheme: light;
+}
+
+/* ---------- Light theme (default) ---------- */
+:root,
+[data-theme='light'] {
+  --bg: #faf3ec;
+  --bg-elevated: #ffffff;
+  --surface: #ffffff;
+  --surface-muted: #f3ece4;
+  --surface-image: #f0e8e0;
+
+  --border: #e6dbd0;
+  --border-strong: #d6c7b8;
+
+  --text: #241326;
+  --text-muted: #6d5d66;
+  --text-subtle: #8b7a83;
+  --text-inverse: #fdf8f4;
+
+  --primary: #2e1b33;
+  --primary-hover: #40264a;
+  --primary-contrast: #fdf8f4;
+
+  --accent: var(--brand-crimson);
+  --accent-hover: var(--brand-crimson-strong);
+  --accent-contrast: #ffffff;
+
+  --price: #8c1d2a;
+
+  --success-bg: #d9efdd;
+  --success-text: #1e5b32;
+  --warning-bg: #f6e6c8;
+  --warning-text: #6b4a12;
+  --danger-bg: #fbe0e2;
+  --danger-text: #8c1622;
+
+  --focus-ring: #8c1d2a;
+
+  --shadow-sm: 0 1px 2px rgba(36, 19, 38, 0.06);
+  --shadow-md: 0 6px 18px rgba(36, 19, 38, 0.08);
+  --shadow-lg: 0 18px 44px rgba(36, 19, 38, 0.14);
+
+  --hero-from: #4a1236;
+  --hero-to: #c42038;
+  --skeleton-base: #ece2d8;
+  --skeleton-shine: #f7f0e9;
+}
+
+/* ---------- Dark theme ---------- */
+[data-theme='dark'] {
+  color-scheme: dark;
+
+  --bg: #1d1020;
+  --bg-elevated: #271630;
+  --surface: #271630;
+  --surface-muted: #321d3a;
+  --surface-image: #f0e8e0;
+
+  --border: #3d2647;
+  --border-strong: #523259;
+
+  --text: #f7eff4;
+  --text-muted: #c0aabb;
+  --text-subtle: #9c869a;
+  --text-inverse: #241326;
+
+  --primary: #f3e7ee;
+  --primary-hover: #ffffff;
+  --primary-contrast: #241326;
+
+  --accent: #e0243a;
+  --accent-hover: #f0384d;
+  --accent-contrast: #ffffff;
+
+  --price: #f2b8bf;
+
+  --success-bg: #1d4630;
+  --success-text: #a8e3bb;
+  --warning-bg: #4a3612;
+  --warning-text: #f0d9a4;
+  --danger-bg: #4d1620;
+  --danger-text: #f6b7bf;
+
+  --focus-ring: #f2b8bf;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 6px 18px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 18px 44px rgba(0, 0, 0, 0.55);
+
+  --hero-from: #4a1236;
+  --hero-to: #b81f35;
+  --skeleton-base: #33203c;
+  --skeleton-shine: #422a4c;
+}

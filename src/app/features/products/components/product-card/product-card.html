@@ -1,0 +1,44 @@
+<article class="card product-card">
+  <a
+    class="product-card__media"
+    [routerLink]="['/products', product().id]"
+    tabindex="-1"
+    aria-hidden="true"
+  >
+    <app-product-image [src]="product().image" [alt]="product().title" [priority]="priority()" />
+    @if (isTopRated()) {
+      <span class="badge badge--warning product-card__badge">Top rated</span>
+    }
+  </a>
+
+  <div class="product-card__body">
+    <p class="eyebrow">{{ product().category }}</p>
+
+    <h3 class="product-card__title">
+      <a [routerLink]="['/products', product().id]">{{ product().title }}</a>
+    </h3>
+
+    <app-star-rating [rate]="product().rating.rate" [count]="product().rating.count" />
+
+    <p class="product-card__price">{{ product().price | currency: 'USD' }}</p>
+
+    <div class="product-card__actions">
+      @if (inCart()) {
+        <app-quantity-stepper
+          [quantity]="quantityInCart()"
+          [label]="product().title"
+          (increment)="increment.emit(product().id)"
+          (decrement)="decrement.emit(product().id)"
+          (remove)="remove.emit(product().id)"
+        />
+        <span class="product-card__in-cart">In cart</span>
+      } @else {
+        <button type="button" class="btn btn--primary btn--block" (click)="add.emit(product())">
+          <app-icon name="cart" [size]="16" />
+          Add to cart
+          <span class="visually-hidden">: {{ product().title }}</span>
+        </button>
+      }
+    </div>
+  </div>
+</article>

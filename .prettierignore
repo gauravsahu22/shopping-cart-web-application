@@ -1,0 +1,6 @@
+dist
+coverage
+.angular
+playwright-report
+test-results
+package-lock.json

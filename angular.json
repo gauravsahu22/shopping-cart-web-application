@@ -1,0 +1,116 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "cli": {
+    "packageManager": "npm",
+    "analytics": "69fdbd61-66fd-430d-abfd-13290432827a"
+  },
+  "newProjectRoot": "projects",
+  "projects": {
+    "kiboGoods": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "",
+      "sourceRoot": "src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:application",
+          "options": {
+            "browser": "src/main.ts",
+            "tsConfig": "tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "public"
+              }
+            ],
+            "styles": ["src/styles.scss"]
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kB",
+                  "maximumError": "1MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "4kB",
+                  "maximumError": "8kB"
+                }
+              ],
+              "outputHashing": "all",
+              "fileReplacements": [
+                {
+                  "replace": "src/app/core/devtools/devtools.providers.ts",
+                  "with": "src/app/core/devtools/devtools.providers.prod.ts"
+                }
+              ]
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular/build:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "kiboGoods:build:production"
+            },
+            "development": {
+              "buildTarget": "kiboGoods:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "buildTarget": "kiboGoods:build:development",
+            "tsConfig": "tsconfig.spec.json",
+            "runner": "vitest",
+            "setupFiles": ["src/testing/setup.ts"],
+            "coverageExclude": [
+              "src/main.ts",
+              "src/app/app.config.ts",
+              "src/app/app.routes.ts",
+              "src/testing/**",
+              "**/*.spec.ts"
+            ],
+            "coverageReporters": ["text-summary", "html", "lcovonly"],
+            "coverageThresholds": {
+              "statements": 80,
+              "branches": 75,
+              "functions": 80,
+              "lines": 80
+            },
+            "coverageInclude": ["src/app/**/*.ts"]
+          },
+          "configurations": {
+            "ci": {
+              "coverage": true,
+              "watch": false
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": ["src/**/*.ts", "src/**/*.html", "e2e/**/*.ts"]
+          }
+        }
+      }
+    }
+  }
+}

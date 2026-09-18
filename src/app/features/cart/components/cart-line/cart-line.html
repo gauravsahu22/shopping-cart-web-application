@@ -1,0 +1,29 @@
+<div class="line">
+  <a class="line__media" [routerLink]="['/products', item().id]" tabindex="-1" aria-hidden="true">
+    <app-product-image [src]="item().image" [alt]="item().title" />
+  </a>
+
+  <div class="line__info">
+    <p class="eyebrow">{{ item().category }}</p>
+    <h3 class="line__title">
+      <a [routerLink]="['/products', item().id]">{{ item().title }}</a>
+    </h3>
+    <p class="line__unit">{{ item().price | currency: 'USD' }} each</p>
+  </div>
+
+  <div class="line__controls">
+    <app-quantity-stepper
+      [quantity]="item().quantity"
+      [label]="item().title"
+      (increment)="increment.emit(item().id)"
+      (decrement)="decrement.emit(item().id)"
+      (remove)="remove.emit(item().id)"
+    />
+    <p class="line__total">{{ total() | currency: 'USD' }}</p>
+  </div>
+
+  <button type="button" class="line__remove" (click)="remove.emit(item().id)">
+    Remove
+    <span class="visually-hidden">{{ item().title }} from your cart</span>
+  </button>
+</div>
