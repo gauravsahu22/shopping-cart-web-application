@@ -15,11 +15,14 @@ npm install
 npm start          # http://localhost:4200
 ```
 
-> **Node and npm.** Requires Node `>=22.12` and **npm `>=11`**. npm 9 and 10
-> crash while resolving this dependency tree with
-> `Cannot read properties of null (reading 'edgesOut')` — a known arborist bug,
-> not a problem with the lockfile. If your npm is older:
-> `npx npm@11 install` works without changing your global install.
+> **Node and npm.** Requires Node `>=22.12` and **npm `>=11`**. Two separate
+> things break on older npm: `npm install` crashes while resolving this tree
+> with `Cannot read properties of null (reading 'edgesOut')` (a known arborist
+> bug, not a lockfile problem), and `npm ci` rejects the lockfile outright with
+> `Missing: @emnapi/runtime from lock file`, because npm 10 cannot read the
+> npm 11 lockfile format. If your npm is older, `npx npm@11 install` works
+> without changing your global install. Node 24 bundles npm 11 and needs
+> nothing extra — that is what CI uses.
 
 | Command           | What it does                                     |
 | ----------------- | ------------------------------------------------ |

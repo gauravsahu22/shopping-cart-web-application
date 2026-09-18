@@ -11,9 +11,12 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  # Angular 21 needs Node >= 22.12; npm 9/10 cannot resolve this dependency tree
-  # (arborist "edgesOut" bug), so the npm version is pinned explicitly.
-  NODE_VERSION: '22.12'
+  # Node 24 is chosen because it bundles npm 11, which this project requires:
+  # the lockfile is in the npm 11 format and npm 10 rejects it outright
+  # ("Missing: @emnapi/runtime from lock file"). Node 22.12 bundles npm 10, so
+  # it would need an upgrade step that has to run before `npm ci` — one less
+  # moving part this way. Angular 21 supports ^20.19 || ^22.12 || >=24.
+  NODE_VERSION: '24'
   NPM_VERSION: '11'
 
 jobs:
@@ -31,7 +34,14 @@ jobs:
           cache: npm
 
       - name: Use a compatible npm
-        run: npm install --global npm@${{ env.NPM_VERSION }}
+        # Belt and braces: Node 24 already ships npm 11, but this guards against
+        # a future runner image shipping something older, and prints the version
+        # so a dependency failure is diagnosable from the log alone.
+        run: |
+          if [ "$(npm -v | cut -d. -f1)" -lt "${{ env.NPM_VERSION }}" ]; then
+            npm install --global npm@${{ env.NPM_VERSION }}
+          fi
+          echo "node $(node -v) / npm $(npm -v)"
 
       - name: Install dependencies
         run: npm ci
@@ -80,7 +90,14 @@ jobs:
           cache: npm
 
       - name: Use a compatible npm
-        run: npm install --global npm@${{ env.NPM_VERSION }}
+        # Belt and braces: Node 24 already ships npm 11, but this guards against
+        # a future runner image shipping something older, and prints the version
+        # so a dependency failure is diagnosable from the log alone.
+        run: |
+          if [ "$(npm -v | cut -d. -f1)" -lt "${{ env.NPM_VERSION }}" ]; then
+            npm install --global npm@${{ env.NPM_VERSION }}
+          fi
+          echo "node $(node -v) / npm $(npm -v)"
 
       - name: Install dependencies
         run: npm ci
