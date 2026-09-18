@@ -58,7 +58,7 @@
   --brand-plum: #2e1b33;
   --brand-gold: #e6d0a0;
 
-  color-scheme: light;
+  color-scheme: only light;
 }
 
 /* ---------- Light theme (default) ---------- */
@@ -109,7 +109,7 @@
 
 /* ---------- Dark theme ---------- */
 [data-theme='dark'] {
-  color-scheme: dark;
+  color-scheme: only dark;
 
   --bg: #1d1020;
   --bg-elevated: #271630;
