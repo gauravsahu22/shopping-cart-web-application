@@ -11,11 +11,8 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  # Node 24 is chosen because it bundles npm 11, which this project requires:
-  # the lockfile is in the npm 11 format and npm 10 rejects it outright
-  # ("Missing: @emnapi/runtime from lock file"). Node 22.12 bundles npm 10, so
-  # it would need an upgrade step that has to run before `npm ci` — one less
-  # moving part this way. Angular 21 supports ^20.19 || ^22.12 || >=24.
+  # Node 24 bundles npm 11, which is what `engines` requires, so no npm upgrade
+  # has to happen before `npm ci`. Angular 21 supports ^20.19 || ^22.12 || >=24.
   NODE_VERSION: '24'
   NPM_VERSION: '11'
 
@@ -44,19 +41,7 @@ jobs:
           echo "node $(node -v) / npm $(npm -v)"
 
       - name: Install dependencies
-        # TEMPORARY DIAGNOSTIC: `npm ci` is failing on the runner but not
-        # locally against a clean clone, so on failure the first lines of its
-        # output are re-emitted as workflow annotations, which are readable
-        # without downloading the run log.
-        run: |
-          set -o pipefail
-          if ! npm ci 2>&1 | tee /tmp/npm-ci.log; then
-            echo "::error::env: node $(node -v) npm $(npm -v) on $(uname -sm)"
-            head -n 12 /tmp/npm-ci.log | while IFS= read -r line; do
-              echo "::error::$line"
-            done
-            exit 1
-          fi
+        run: npm ci
 
       - name: Check formatting
         run: npm run format:check
@@ -112,19 +97,7 @@ jobs:
           echo "node $(node -v) / npm $(npm -v)"
 
       - name: Install dependencies
-        # TEMPORARY DIAGNOSTIC: `npm ci` is failing on the runner but not
-        # locally against a clean clone, so on failure the first lines of its
-        # output are re-emitted as workflow annotations, which are readable
-        # without downloading the run log.
-        run: |
-          set -o pipefail
-          if ! npm ci 2>&1 | tee /tmp/npm-ci.log; then
-            echo "::error::env: node $(node -v) npm $(npm -v) on $(uname -sm)"
-            head -n 12 /tmp/npm-ci.log | while IFS= read -r line; do
-              echo "::error::$line"
-            done
-            exit 1
-          fi
+        run: npm ci
 
       - name: Install Playwright browser
         run: npx playwright install --with-deps chromium
